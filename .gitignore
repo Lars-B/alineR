@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
+src/Stack.o
+src/Word.o
+src/alineR.o
+src/alineR.so
+src/wagner.o
+
