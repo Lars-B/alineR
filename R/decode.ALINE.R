@@ -5,8 +5,15 @@
 decode.ALINE <-
 function(x,y,m1=NULL,m2=NULL) {
   map<-map(m1,m2)
-  diacritics<-read.csv("./data/aline_diacritic_set.csv")
-  
+
+  diacritics_file <- system.file("extdata", "aline_diacritic_set.csv", package = "alineR")
+
+  if (diacritics_file == "") {
+    stop("Required ALINE data files are missing from the package!")
+  }
+#   diacritics<-read.csv("./data/aline_diacritic_set.csv")
+  diacritics<-read.csv(diacritics_file, stringsAsFactors = FALSE)
+
   splitx<-strsplit(x,"")
   splity<-strsplit(y,"")  
    

@@ -4,8 +4,17 @@
 
 encode.ALINE <-
   function(x, mark=FALSE, m1=NULL, m2=NULL){
-    map<-read.csv("./data/aline_mapset_workingcopy.csv")
-    diacritics<-read.csv("./data/aline_diacritic_set.csv")
+    map_file <- system.file("extdata", "aline_mapset_workingcopy.csv", package = "alineR")
+    diacritics_file <- system.file("extdata", "aline_diacritic_set.csv", package = "alineR")
+
+    if (map_file == "" || diacritics_file == "") {
+        stop("Required ALINE data files are missing from the package!")
+    }
+
+#     map<-read.csv("./data/aline_mapset_workingcopy.csv")
+    map<-read.csv(map_file, stringsAsFactors=FALSE)
+#     diacritics<-read.csv("./data/aline_diacritic_set.csv")
+    diacritics<-read.csv(diacritics_file, stringsAsFactors=FALSE)
 
     v<-intToUtf8(c(65:90, 97:122), multiple=T) 
     `%nin%` <- function (x, table) match(x, table, nomatch = 0L) == 0L 

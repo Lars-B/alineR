@@ -7,8 +7,15 @@ map<-function(m1,m2){
   if(length(m1)!=length(m2)) stop("vector has different length")
   # ALINE.map<-NULL
   # data(ALINE.map,envir=environment())
-  
-  map<-read.csv("./data/aline_mapset_workingcopy.csv")
+
+  map_file <- system.file("extdata", "aline_mapset_workingcopy.csv", package = "alineR")
+  if (map_file == "") {
+        stop("Required ALINE data files are missing from the package!")
+  }
+
+
+#   map<-read.csv("./data/aline_mapset_workingcopy.csv")
+  map<-read.csv(map_file, stringsAsFactors = FALSE)
 
   # map<-show.map()
   Aline.v<-c('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
@@ -49,7 +56,12 @@ map<-function(m1,m2){
   }
   }
   else{
-    map<-read.csv("./data/aline_mapset_workingcopy.csv")
+#     map<-read.csv("./data/aline_mapset_workingcopy.csv")
+    map_file <- system.file("extdata", "aline_mapset_workingcopy.csv", package = "alineR")
+      if (map_file == "") {
+            stop("Required ALINE data files are missing from the package!")
+      }
+    map<-read.csv(map_file, stringsAsFactors = FALSE)
   }
   return(map)
 }

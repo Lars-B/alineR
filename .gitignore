@@ -8,4 +8,4 @@ src/Word.o
 src/alineR.o
 src/alineR.so
 src/wagner.o
-
+.idea
