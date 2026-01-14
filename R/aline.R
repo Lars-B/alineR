@@ -113,10 +113,16 @@ function(w1,w2,lang1=NULL,lang2=NULL,sim=TRUE,mark=TRUE,alignment=TRUE,...){
     for(i in 1:length(scores)){
       names[i]<-paste("pair",i,sep="")
     }
-    M=rbind(w1,w2,scores,a1,a2)
+    # M=rbind(w1,w2,scores,a1,a2)
     ###
-    M<-as.data.frame(M)
-    colnames(M)<-names
-    return(M)
+    # M<-as.data.frame(M)
+    # colnames(M)<-names
+    # return(M)
+    return_list <- list(
+      score = scores,
+      words = data.frame(w1 = w1, w2 = w2),
+      alignment = data.frame(a1 = a1, a2 = a2)
+    )
+    return(return_list)
 	} else return(scores)
 }
