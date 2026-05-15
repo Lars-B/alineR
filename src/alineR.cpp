@@ -8,19 +8,33 @@
 extern "C"{
 
   SEXP exchange(SEXP s, SEXP coeff, SEXP skpen){
-    //first line is for test  int a=20;char aback1[20];char aback2[20];strcpy(aback1,"tu");strcpy(aback2,"tuF");printf("look at the returns:\n");printf("%s %s %d\n",aback1,aback2,a);
+    // Validate s
+    if(TYPEOF(s) != STRSXP) {
+        error("'s' must be a character vector");
+    }
 
-    // now we have to deal with the input, give the string value to two vectors
-    //char s1[20], s2[20];
+    if(LENGTH(s) != 2) {
+        error("'s' must contain exactly two strings");
+    }
+
+    // Validate coeff
+    if(TYPEOF(coeff) != INTSXP) {
+        error("'coeff' must be an integer vector");
+    }
+
+    if(LENGTH(coeff) < 13) {
+        error("'coeff' must have length at least 13");
+    }
+
     // manually increase the length of accepted vectors
     char s1[200], s2[200];
-    
+
     // copy the input strings
     strcpy(s1,CHAR(STRING_ELT(s,0)));
     strcpy(s2,CHAR(STRING_ELT(s,1)));
-    
-    int vec[13]; 
-    
+
+    int vec[13];
+
     for(int i=0;i<13;i++) {
       vec[i]=INTEGER(coeff)[i]; //printf("%d\n",vec[11]);
       // printf("%d\n", INTEGER(coeff)[i]);
@@ -36,15 +50,15 @@ extern "C"{
         char aback2[500];
 
         Word::applyRedundancyRules(); // sets vowel height values
-        
+
         Word* w1 = new Word(s1); // construct word 1
         Word* w2 = new Word(s2); // construct word 2
-        
+
         // w1->showAll();
         // w2->showAll();
-        
+
         align( w1, w2,score, aback1, aback2, vec, SkipPen);
-        
+
         delete w1;
         delete w2;
 
@@ -53,26 +67,26 @@ extern "C"{
 
 
     // This is the output part, where a list is now successfully returned!
-    
+
     // create vectors for alignment1, alignment2, and simscore
     SEXP alignment1=PROTECT(allocVector(STRSXP,1));
     SEXP alignment2=PROTECT(allocVector(STRSXP,1));
     SEXP simscore=PROTECT(allocVector(REALSXP,1));
-    
+
     // create wrapper vector
-    SEXP result=PROTECT(allocVector(VECSXP,3)); 
-    
+    SEXP result=PROTECT(allocVector(VECSXP,3));
+
     // fill in alignment1, aligment2, and simscore
     SET_STRING_ELT(alignment1,0,mkChar(aback1));
     SET_STRING_ELT(alignment2,0,mkChar(aback2));
     REAL(simscore)[0]=a;
-    
+
     // fill result in with alignment1, alignment2, and simscore
     SET_VECTOR_ELT(result,0,alignment1);
     SET_VECTOR_ELT(result,1,alignment2);
     SET_VECTOR_ELT(result,2,simscore);
     UNPROTECT(4);
-    
+
     // return
     return(result);
   }
